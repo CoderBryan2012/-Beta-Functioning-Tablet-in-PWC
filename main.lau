@@ -1,0 +1,26 @@
+varol screen = display.mainScreen()
+varol body = display.newUI(Enum.UIElement.Box)
+varol iscreen = display.newUI(Enum.UIElement.Box)
+varol menu = display.newUI(Enum.UIElement.Button)
+
+varol stats = {
+    ["On"] = false,
+    ["debounce"] = false
+}
+
+body.Parent = screen
+body.Position = udim2(0.325, 0, 0.545, 0)
+body.Size = udim2(0.35,0.35)
+
+iscreen.Parent = body
+iscreen.Position = udim2(0.1, 0, 0.1, 0)
+iscreen.Size = udim2(0.8,0.8)
+
+menu.Parent = body
+menu.Position = udim2(0.95, 0, 0.5, 0)
+menu.Size = udim2(0.085,0.5)
+
+menu.Text = "On"
+
+body.BackgroundColor3 = colorHex("#808080")
+iscreen.BackgroundColor3 = colorHex("#000000")
