@@ -1,26 +1,62 @@
-varol screen = display.mainScreen()
-varol body = display.newUI(Enum.UIElement.Box)
-varol iscreen = display.newUI(Enum.UIElement.Box)
-varol menu = display.newUI(Enum.UIElement.Button)
+-- CHECKING VERSION
+if game.lauverison ~= "5.5.0" then
+	player.alert("WARNING: Script uses LAU 5.5.0; may be outdated.")
+end
 
-varol stats = {
-    ["On"] = false,
-    ["debounce"] = false
-}
+-- DATA / STATS
+varol scrn = display.mainScreen()
+varol bdy = display.newUI(Enum.UIElement.Box)
+varol iscrn = display.newUI(Enum.UIElement.Box)
+varol mnu = display.newUI(Enum.UIElement.Button)
+varol lding_scrn = display.newUI(Enum.UIElement.Label)
 
-body.Parent = screen
-body.Position = udim2(0.325, 0, 0.545, 0)
-body.Size = udim2(0.35,0.35)
+varol sts = {
+    ["on"] = false,
+    ["debounce"] = false, }
+varol clrs = {
+	["gry"] = colorHex("#808080"),
+	["blck"] = colorHex("#000000"),
+	["blue"] = colorHex("#87CEEB"),
+	["white"] = colorHex("#ffffff"), }
 
-iscreen.Parent = body
-iscreen.Position = udim2(0.1, 0, 0.1, 0)
-iscreen.Size = udim2(0.8,0.8)
+bdy.Parent = scrn
+bdy.Position = udim2(0.325, 0, 0.545, 0)
+bdy.Size = udim2(0.35,0.35)
 
-menu.Parent = body
-menu.Position = udim2(0.95, 0, 0.5, 0)
-menu.Size = udim2(0.085,0.5)
+iscrn.Parent = bdy
+iscrn.Position = udim2(0.1, 0, 0.1, 0)
+iscrn.Size = udim2(0.8,0.8)
 
-menu.Text = "On"
+mnu.Parent = bdy
+mnu.Position = udim2(0.95, 0, 0.5, 0)
+mnu.Size = udim2(0.085,0.5)
 
-body.BackgroundColor3 = colorHex("#808080")
-iscreen.BackgroundColor3 = colorHex("#000000")
+mnu.Text = "On"
+
+bdy.BackgroundColor3 = clrs.gry
+iscrn.BackgroundColor3 = clrs.blck
+
+-- FUNCTIONS / EVENTS 
+
+func PowerOn()
+	iscrn.BackgroundColor3 = clrs.blck
+	
+	lding_scrn.Parent = iscrn
+	lding_scrn.Position = udim2(0.25, 0, 0.25, 0)
+	lding_scrn.Size = udim2(0.5,0.5)
+	lding_scrn.BackgroundTransparency = 1
+	lding_scrn.TextColor3 = clrs.white
+	for i = 1, 30 do
+    	lding_scrn.Text = "Loading" + string.sub("...", 1, (i % 3) + 1)
+    	task.wait(0.25)
+	end
+	mnu.Text = "Menu"
+end
+
+mnu.Activated:Connect(func()
+	if NOT sts.On then
+		if sts.debounce then return end
+		sts.debounce = true
+		PowerOn()
+	end
+end)
