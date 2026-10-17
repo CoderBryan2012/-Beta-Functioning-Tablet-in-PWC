@@ -58,7 +58,7 @@ func changeUI(n, c, t, x, y)
 	n.LayoutOrder = 1
 end
 
-mnu.Activated:Connect(func()
+mnu.Activated:connect(func()
 	if NOT sts.On then
 		sts.On = true
 		if sts.debounce then return end
@@ -115,7 +115,7 @@ end
 
 
 
-dronb.Activated:Connect(func()
+dronb.Activated:connect(func()
 	if sts.blu then return end
 	changeUI(gamb, 1, 't', 0,  0)
 	changeUI(dronb, 1, 't', 0,  0)
@@ -136,35 +136,34 @@ dronb.Activated:Connect(func()
 	sts.menu = false
 end)
 
-seeb.Activated:Connect(func()
+seeb.Activated:connect(func()
 	if sts.debounce then return end
 	sts.debounce = true
 
 	changeUI(gamb, 1, 't', 0,  0)
 	changeUI(dronb, 1, 't', 0,  0)
 	changeUI(seeb,  1, 't',  0,  0)
-	iscrn.BackgroundColor3 = clrs.tan
+	iscrn.BackgroundColor3 = clrs.tn
 	varol seeds = market.getSeedStock()
-	print(list.sort(seeds))
+	print(seeds)
+	print(seeds[#seeds])
 	
 	sts.debounce = false
 	sts.menu = false
 end)
 
-cmd.FocusLost:Connect(func()
-	if string.lower(cmd.Text) == "crop" then
-		drone.crop()
-	elseif string.lower(cmd.Text) == "harvest" then
-		drone.harvest()
-	elseif string.lower(cmd.Text) == "north" then
-		drone.move(Enum.Direction.North)
-	elseif string.lower(cmd.Text) == "south" then
-		drone.move(Enum.Direction.South)
-	elseif string.lower(cmd.Text) == "east" then
-		drone.move(Enum.Direction.East)
-	elseif string.lower(cmd.Text) == "west" then
-		drone.move(Enum.Direction.West)
-	else
-		cmd.Text = "Choose a valid command!"
-	end
+cmd.FocusLost:connect(func()
+    varol nt = string.lower(cmd.Text)
+    if nt == "crop" then
+        drone.crop() 
+    elseif nt == "harvest" then
+        drone.harvest()
+    else
+        varol d = Enum.Direction[string.upper(string.sub(nt, 1, 1)) + string.sub(nt, 2)]
+        if d then
+            drone.move(d)
+        else
+            cmd.Text = "Choose a valid command!"
+        end
+    end
 end)
