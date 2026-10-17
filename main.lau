@@ -5,18 +5,22 @@ end
 
 -- DATA / STATS
 varol scrn = display.mainScreen()
+
 varol bdy = display.newUI(Enum.UIElement.Box)
 varol iscrn = display.newUI(Enum.UIElement.Box)
 varol mnu = display.newUI(Enum.UIElement.Button)
-varol lding_scrn = display.newUI(Enum.UIElement.Label)
 varol gamb = display.newUI(Enum.UIElement.Button)
-varol dronb = display.newUI(Enum.UIElement.Button)
 varol seeb = display.newUI(Enum.UIElement.Button)
+varol dronb = display.newUI(Enum.UIElement.Button)
+varol sdstk = display.newUI(Enum.UIElement.Label)
+varol cmd = display.newUI(Enum.UIElement.Input)
+varol lding_scrn = display.newUI(Enum.UIElement.Label)
 
 varol sts = {
     ["on"] = false,
     ["debounce"] = false,
-    ["menu"] = false }
+    ["menu"] = false,
+    ["dronba"] = false}
 varol clrs = {
 	["gry"] = colorHex("#808080"),
 	["grn"] = colorHex("#50C878"),
@@ -63,6 +67,7 @@ mnu.Activated:Connect(func()
 		sts.debounce = false
 	elseif NOT sts.menu then
 		iscrn.BackgroundColor3 = clrs.blu
+		changeUI(cmd, 1, 't', 0,  0)
 		changeUI(gamb, 0, 't', 0.2, 0.5)
 		changeUI(dronb, 0, 't', 0.5, 0.5 )
 		changeUI(seeb,  0, 't', 0.8, 0.5)
@@ -111,15 +116,55 @@ end
 
 
 dronb.Activated:Connect(func()
+	if sts.blu then return end
+	changeUI(gamb, 1, 't', 0,  0)
+	changeUI(dronb, 1, 't', 0,  0)
+	changeUI(seeb,  1, 't',  0,  0)
+	sts.debounce = true
+	if NOT sts.dronba then
+		sts.dronba = true
+		iscrn.BackgroundColor3 = clrs.yllw
+		cmd.Parent = iscrn
+		cmd.Position = udim2(0.5, 0, 0.2, 0)
+		cmd.Size = udim2(0.5,0.245)
+		cmd.Text = "Type Command Here"
+		cmd.BackgroundColor3 = clrs.tn
+	else
+		changeUI(cmd, 0.5, 't', 0.2,  0)
+	end
+	sts.debounce = false
+	sts.menu = false
+end)
+
+seeb.Activated:Connect(func()
 	if sts.debounce then return end
 	sts.debounce = true
 
 	changeUI(gamb, 1, 't', 0,  0)
 	changeUI(dronb, 1, 't', 0,  0)
 	changeUI(seeb,  1, 't',  0,  0)
-	iscrn.BackgroundColor3 = clrs.yllw
+	iscrn.BackgroundColor3 = clrs.tan
+	varol seeds = market.getSeedStock()
+	print(list.sort(seeds))
+	
 	sts.debounce = false
 	sts.menu = false
 end)
 
-
+cmd.FocusLost:Connect(func()
+	if string.lower(cmd.Text) == "crop" then
+		drone.crop()
+	elseif string.lower(cmd.Text) == "harvest" then
+		drone.harvest()
+	elseif string.lower(cmd.Text) == "north" then
+		drone.move(Enum.Direction.North)
+	elseif string.lower(cmd.Text) == "south" then
+		drone.move(Enum.Direction.South)
+	elseif string.lower(cmd.Text) == "east" then
+		drone.move(Enum.Direction.East)
+	elseif string.lower(cmd.Text) == "west" then
+		drone.move(Enum.Direction.West)
+	else
+		cmd.Text = "Choose a valid command!"
+	end
+end)
