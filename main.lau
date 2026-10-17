@@ -9,15 +9,21 @@ varol bdy = display.newUI(Enum.UIElement.Box)
 varol iscrn = display.newUI(Enum.UIElement.Box)
 varol mnu = display.newUI(Enum.UIElement.Button)
 varol lding_scrn = display.newUI(Enum.UIElement.Label)
+varol gamb = display.newUI(Enum.UIElement.Button)
+varol dronb = display.newUI(Enum.UIElement.Button)
+varol seeb = display.newUI(Enum.UIElement.Button)
 
 varol sts = {
     ["on"] = false,
     ["debounce"] = false, }
 varol clrs = {
 	["gry"] = colorHex("#808080"),
+	["grn"] = colorHex("#50C878"),
 	["blck"] = colorHex("#000000"),
-	["blue"] = colorHex("#87CEEB"),
-	["white"] = colorHex("#ffffff"), }
+	["blu"] = colorHex("#87CEEB"),
+	["white"] = colorHex("#ffffff"),
+	["yllw"] = colorHex("#DFFF00"),
+	["tn"] = colorHex("#C9CC3F"), }
 
 bdy.Parent = scrn
 bdy.Position = udim2(0.325, 0, 0.545, 0)
@@ -39,18 +45,18 @@ iscrn.BackgroundColor3 = clrs.blck
 -- FUNCTIONS / EVENTS 
 
 func PowerOn()
-	iscrn.BackgroundColor3 = clrs.blck
-	
 	lding_scrn.Parent = iscrn
 	lding_scrn.Position = udim2(0.25, 0, 0.25, 0)
 	lding_scrn.Size = udim2(0.5,0.5)
 	lding_scrn.BackgroundTransparency = 1
 	lding_scrn.TextColor3 = clrs.white
-	for i = 1, 30 do
+	for i = 1, 5 do
     	lding_scrn.Text = "Loading" + string.sub("...", 1, (i % 3) + 1)
     	task.wait(0.25)
 	end
+	lding_scrn.TextTransparency = 1
 	mnu.Text = "Menu"
+	LoadMenu()
 end
 
 mnu.Activated:Connect(func()
@@ -58,5 +64,27 @@ mnu.Activated:Connect(func()
 		if sts.debounce then return end
 		sts.debounce = true
 		PowerOn()
+		sts.debounce = false
 	end
 end)
+
+func LoadMenu()
+	iscrn.BackgroundColor3 = clrs.blu
+	gamb.Parent = iscrn
+	gamb.Position = udim2(0.2, 0, 0.5, 0)
+	gamb.Size = udim2(0.25,0.245)
+	gamb.Text = "Game"
+	gamb.BackgroundColor3 = clrs.grn
+	
+	dronb.Parent = iscrn
+	dronb.Position = udim2(0.5, 0, 0.5, 0)
+	dronb.Size = udim2(0.25,0.245)
+	dronb.Text = "Drone"
+	dronb.BackgroundColor3 = clrs.yllw
+	
+	seeb.Parent = iscrn
+	seeb.Position = udim2(0.8, 0, 0.5, 0)
+	seeb.Size = udim2(0.25,0.245)
+	seeb.Text = "Seeds"
+	seeb.BackgroundColor3 = clrs.yllw
+end
