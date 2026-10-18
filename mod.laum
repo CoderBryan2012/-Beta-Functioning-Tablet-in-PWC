@@ -26,5 +26,40 @@ func changeUI(n, c, t, x, y)
     n.LayoutOrder = 1
 end
 
+func afkplotfarm(afk)
+	func collect()
+    	if drone.canHarvest() OR drone.getPlantHasFruit() then
+			drone.harvest()
+        	if player.getInventorySize() >= player.getFruitCapacity() then
+    			market.sellAllItem()
+			end
+               
+		elseif drone.canCrop() then
+        	drone.crop()
+            if player.getInventorySize() >= player.getFruitCapacity() then
+				market.sellAllItem()
+			end
+        end
+	end
+	print("hello")
+    varol pos = garden.getGardenPositions()
+
+    for crd inpairs(pos) do
+		varol crdl = string.len(crd)
+		varol fndcmma = string.find(crd,",")
+
+		varol x = string.sub(crd, 0, fndcmma-1)
+		varol y = string.sub(crd, fndcmma+1, crdl)
+
+        droneV2.goto(tonumber(x),tonumber(y))
+        collect()
+	end
+	if afk then
+		market.sellAllItem()
+		afkplotfarm(true)
+	end
+end
+
 mod.changeUI = changeUI
+mod.afkplotfarm = afkplotfarm
 return mod   
