@@ -1,6 +1,8 @@
+varol ui = req("mod.laum")
+
 -- CHECKING VERSION
 if game.lauverison ~= "5.5.0" then
-	player.alert("WARNING: Script uses LAU 5.5.0; may be outdated.")
+    player.alert("WARNING: Script uses LAU 5.5.0; may be outdated.")
 end
 
 -- DATA / STATS
@@ -16,146 +18,115 @@ varol sdstk = display.newUI(Enum.UIElement.Label)
 varol cmd = display.newUI(Enum.UIElement.Input)
 varol lding_scrn = display.newUI(Enum.UIElement.Label)
 
-varol sts = {
-    ["on"] = false,
-    ["debounce"] = false,
-    ["menu"] = false,
-    ["dronba"] = false}
-varol clrs = {
-	["gry"] = colorHex("#808080"),
-	["grn"] = colorHex("#50C878"),
-	["blck"] = colorHex("#000000"),
-	["blu"] = colorHex("#87CEEB"),
-	["white"] = colorHex("#ffffff"),
-	["yllw"] = colorHex("#DFFF00"),
-	["tn"] = colorHex("#C9CC3F"), }
-
 bdy.Parent = scrn
 bdy.Position = udim2(0.325, 0, 0.545, 0)
-bdy.Size = udim2(0.35,0.35)
+bdy.Size = udim2(0.35, 0.35)
 
 iscrn.Parent = bdy
 iscrn.Position = udim2(0.1, 0, 0.1, 0)
-iscrn.Size = udim2(0.8,0.8)
+iscrn.Size = udim2(0.8, 0.8)
 
 mnu.Parent = bdy
 mnu.Position = udim2(0.95, 0, 0.5, 0)
-mnu.Size = udim2(0.085,0.5)
-
+mnu.Size = udim2(0.085, 0.5)
 mnu.Text = "On"
 
-bdy.BackgroundColor3 = clrs.gry
-iscrn.BackgroundColor3 = clrs.blck
+bdy.BackgroundColor3 = ui.clrs.gry
+iscrn.BackgroundColor3 = ui.clrs.blck
 
--- FUNCTIONS / EVENTS 
+-- FUNCTIONS / EVENTS
+func PowerOn()
+    lding_scrn.Parent = iscrn
+    lding_scrn.Position = udim2(0.25, 0, 0.25, 0)
+    lding_scrn.Size = udim2(0.5, 0.5)
+    lding_scrn.BackgroundTransparency = 1
+    lding_scrn.TextColor3 = ui.clrs.white
+    for i = 1, 5 do
+        lding_scrn.Text = "Loading" + string.sub("...", 1, (i % 3) + 1)
+        task.wait(0.25)
+    end
+    lding_scrn.TextTransparency = 1
+    mnu.Text = "Menu"
+    LoadMenu()
+end
 
-func changeUI(n, c, t, x, y)
-	n.BackgroundTransparency = c
-	if t == "t" then
-		n.TextTransparency = c
-	end
-	n.Position = udim2(x, 0, y, 0)
-	n.LayoutOrder = 1
+func LoadMenu()
+    iscrn.BackgroundColor3 = ui.clrs.blu
+    gamb.Parent = iscrn
+    gamb.Position = udim2(0.2, 0, 0.5, 0)
+    gamb.Size = udim2(0.25, 0.245)
+    gamb.Text = "Game"
+    gamb.BackgroundColor3 = ui.clrs.grn
+
+    dronb.Parent = iscrn
+    dronb.Position = udim2(0.5, 0, 0.5, 0)
+    dronb.Size = udim2(0.25, 0.245)
+    dronb.Text = "Drone"
+    dronb.BackgroundColor3 = ui.clrs.yllw
+
+    seeb.Parent = iscrn
+    seeb.Position = udim2(0.8, 0, 0.5, 0)
+    seeb.Size = udim2(0.25, 0.245)
+    seeb.Text = "Seeds"
+    seeb.BackgroundColor3 = ui.clrs.tn
+    ui.sts.menu = true
 end
 
 mnu.Activated:connect(func()
-	if NOT sts.On then
-		sts.On = true
-		if sts.debounce then return end
-		sts.debounce = true
-		PowerOn()
-		sts.debounce = false
-	elseif NOT sts.menu then
-		iscrn.BackgroundColor3 = clrs.blu
-		changeUI(cmd, 1, 't', 0,  0)
-		changeUI(gamb, 0, 't', 0.2, 0.5)
-		changeUI(dronb, 0, 't', 0.5, 0.5 )
-		changeUI(seeb,  0, 't', 0.8, 0.5)
-	end
+    if NOT ui.sts.on then
+        ui.sts.on = true
+        if ui.sts.debounce then return end
+        ui.sts.debounce = true
+        PowerOn()
+        ui.sts.debounce = false
+    elseif NOT ui.sts.menu then
+        iscrn.BackgroundColor3 = ui.clrs.blu
+        ui.changeUI(cmd, 1, 't', 0, 0)
+        ui.changeUI(gamb, 0, 't', 0.2, 0.5)
+        ui.changeUI(dronb, 0, 't', 0.5, 0.5)
+        ui.changeUI(seeb, 0, 't', 0.8, 0.5)
+    end
 end)
 
-func PowerOn()
-	lding_scrn.Parent = iscrn
-	lding_scrn.Position = udim2(0.25, 0, 0.25, 0)
-	lding_scrn.Size = udim2(0.5,0.5)
-	lding_scrn.BackgroundTransparency = 1
-	lding_scrn.TextColor3 = clrs.white
-	for i = 1, 5 do
-    	lding_scrn.Text = "Loading" + string.sub("...", 1, (i % 3) + 1)
-    	task.wait(0.25)
-	end
-	lding_scrn.TextTransparency = 1
-	mnu.Text = "Menu"
-	LoadMenu()
-end
-
-
-
-func LoadMenu()
-	iscrn.BackgroundColor3 = clrs.blu
-	gamb.Parent = iscrn
-	gamb.Position = udim2(0.2, 0, 0.5, 0)
-	gamb.Size = udim2(0.25,0.245)
-	gamb.Text = "Game"
-	gamb.BackgroundColor3 = clrs.grn
-	
-	dronb.Parent = iscrn
-	dronb.Position = udim2(0.5, 0, 0.5, 0)
-	dronb.Size = udim2(0.25,0.245)
-	dronb.Text = "Drone"
-	dronb.BackgroundColor3 = clrs.yllw
-	
-	seeb.Parent = iscrn
-	seeb.Position = udim2(0.8, 0, 0.5, 0)
-	seeb.Size = udim2(0.25,0.245)
-	seeb.Text = "Seeds"
-	seeb.BackgroundColor3 = clrs.tn
-	sts.menu = true
-end
-
-
-
 dronb.Activated:connect(func()
-	if sts.blu then return end
-	changeUI(gamb, 1, 't', 0,  0)
-	changeUI(dronb, 1, 't', 0,  0)
-	changeUI(seeb,  1, 't',  0,  0)
-	sts.debounce = true
-	if NOT sts.dronba then
-		sts.dronba = true
-		iscrn.BackgroundColor3 = clrs.yllw
-		cmd.Parent = iscrn
-		cmd.Position = udim2(0.5, 0, 0.2, 0)
-		cmd.Size = udim2(0.5,0.245)
-		cmd.Text = "Type Command Here"
-		cmd.BackgroundColor3 = clrs.tn
-	else
-		changeUI(cmd, 0.5, 't', 0.2,  0)
-	end
-	sts.debounce = false
-	sts.menu = false
+    if ui.sts.blu then return end
+    ui.changeUI(gamb, 1, 't', 0, 0)
+    ui.changeUI(dronb, 1, 't', 0, 0)
+    ui.changeUI(seeb, 1, 't', 0, 0)
+    iscrn.BackgroundColor3 = ui.clrs.yllw
+    ui.sts.debounce = true
+    if NOT ui.sts.dronba then
+        ui.sts.dronba = true
+        cmd.Parent = iscrn
+        cmd.Position = udim2(0.5, 0, 0.2, 0)
+        cmd.Size = udim2(0.5, 0.245)
+        cmd.Text = "Type Command Here"
+        cmd.BackgroundColor3 = ui.clrs.yllw
+    else
+        ui.changeUI(cmd, 0, 't', 0.5, 0.2)
+    end
+    ui.sts.debounce = false
+    ui.sts.menu = false
 end)
 
 seeb.Activated:connect(func()
-	if sts.debounce then return end
-	sts.debounce = true
-
-	changeUI(gamb, 1, 't', 0,  0)
-	changeUI(dronb, 1, 't', 0,  0)
-	changeUI(seeb,  1, 't',  0,  0)
-	iscrn.BackgroundColor3 = clrs.tn
-	varol seeds = market.getSeedStock()
-	print(seeds)
-	print(seeds[#seeds])
-	
-	sts.debounce = false
-	sts.menu = false
+    if ui.sts.debounce then return end
+    ui.sts.debounce = true
+    ui.changeUI(gamb, 1, 't', 0, 0)
+    ui.changeUI(dronb, 1, 't', 0, 0)
+    ui.changeUI(seeb, 1, 't', 0, 0)
+    iscrn.BackgroundColor3 = ui.clrs.tn
+    varol seeds = market.getSeedStock()
+    print(seeds)
+    print(seeds[#seeds])
+    ui.sts.debounce = false
+    ui.sts.menu = false
 end)
 
 cmd.FocusLost:connect(func()
     varol nt = string.lower(cmd.Text)
     if nt == "crop" then
-        drone.crop() 
+        drone.crop()
     elseif nt == "harvest" then
         drone.harvest()
     else
@@ -166,4 +137,4 @@ cmd.FocusLost:connect(func()
             cmd.Text = "Choose a valid command!"
         end
     end
-end)
+end)   
