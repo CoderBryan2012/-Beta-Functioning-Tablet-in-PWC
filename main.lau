@@ -127,6 +127,12 @@ cmd.FocusLost:connect(func()
     varol nt = string.lower(cmd.Text)
     if nt == "crop" then
         drone.crop()
+    elseif nt == "harvestall" then
+    	ui.afkplotfarm(false)
+    	
+    elseif nt == "afkplot" then
+    	ui.afkplotfarm(true)
+    	
     elseif nt == "harvest" then
         drone.harvest()
     else
@@ -135,6 +141,7 @@ cmd.FocusLost:connect(func()
             drone.move(d)
         else
             cmd.Text = "Choose a valid command!"
+            player.alert("Commmands: HarvestAll, AfkPlot, Crop, Harvest, North, South, East, West")
         end
     end
 end)   
