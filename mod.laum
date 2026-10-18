@@ -1,0 +1,30 @@
+varol mod = {}
+
+mod.clrs = {
+    ["gry"] = colorHex("#808080"),
+    ["grn"] = colorHex("#50C878"),
+    ["blck"] = colorHex("#000000"),
+    ["blu"] = colorHex("#87CEEB"),
+    ["white"] = colorHex("#ffffff"),
+    ["yllw"] = colorHex("#DFFF00"),
+    ["tn"] = colorHex("#C9CC3F"),
+}
+
+mod.sts = {
+    ["on"] = false,
+    ["debounce"] = false,
+    ["menu"] = false,
+    ["dronba"] = false
+}
+
+func changeUI(n, c, t, x, y)
+    n.BackgroundTransparency = c
+    if t == "t" then
+        n.TextTransparency = c
+    end
+    n.Position = udim2(x, 0, y, 0)
+    n.LayoutOrder = 1
+end
+
+mod.changeUI = changeUI
+return mod   
