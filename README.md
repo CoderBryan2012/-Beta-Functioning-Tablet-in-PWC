@@ -1,4 +1,4 @@
-# Functioning Tablet in PWC (Plant with Coding on Roblox)
+# (Beta) Functioning Tablet in PWC (Plant with Coding on Roblox)
 ### Explanation:
 This project uses mainly LAU UI to create a functioning tablet. 
 - **🥇 Achievement:** Won 1st place in the **Lau Random Ahh Competition** on Lated Graham's discord.
