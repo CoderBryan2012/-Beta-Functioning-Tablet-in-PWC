@@ -8,4 +8,9 @@ This project uses mainly LAU UI to create a functioning tablet.
 ## Quick Start
 
 ### Prerequisites
+- Game Module
+- Drone Module
 - String Module
+- Player Module
+- Market Module
+- DroneV2 Module
