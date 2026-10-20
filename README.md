@@ -10,6 +10,7 @@ This project uses mainly LAU UI to create a functioning tablet.
 ### Prerequisites
 - Game Module
 - Drone Module
+- Garden Module
 - String Module
 - Player Module
 - Market Module
