@@ -24,6 +24,7 @@ After running the script, you can experiment with the code or report issues / id
 - String Module
 - Player Module
 - Market Module
+- Display Module
 - Garden Module
 - DroneV2 Module
 
